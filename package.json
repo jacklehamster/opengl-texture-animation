@@ -1,23 +1,24 @@
 {
-  "name": "@dobuki/opengl-texture-demo",
-  "version": "1.0.4",
+  "name": "@dobuki/opengl-texture-animation",
+  "version": "1.0.0",
   "description": "",
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
+    "install-if-needed": "if [ package.json -nt node_modules ]; then npm install && npm run browserify && touch node_modules; fi",
     "start": "webpack && ts-node demo.ts",
     "test": "mocha src/index.test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jacklehamster/opengl-texture-demo.git"
+    "url": "git+https://github.com/jacklehamster/opengl-texture-animation.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jacklehamster/opengl-texture-demo/issues"
+    "url": "https://github.com/jacklehamster/opengl-texture-animation/issues"
   },
-  "homepage": "https://github.com/jacklehamster/opengl-texture-demo#readme",
+  "homepage": "https://github.com/jacklehamster/opengl-texture-animation#readme",
   "devDependencies": {
     "@babel/preset-react": "^7.16.7",
     "@types/express": "^4.17.13",

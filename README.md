@@ -1,7 +1,7 @@
-# opengl-texture-demo
+# opengl-texture-animation
 
-This is a demo for rendering a texture.
+This is a demo for animating a sprite sheet.
 
 ### Demo
 
-[demo](https://jacklehamster.github.io/opengl-texture-demo/public).
+[demo](https://jacklehamster.github.io/opengl-texture-animation/public).
