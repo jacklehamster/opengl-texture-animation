@@ -6,11 +6,11 @@
     <script>
       const controller = {};
 
-      async function initialize(gl) {
+      async function initialize(gl, getAttributeLocation, getUniformLocation) {
         const triangleArray = gl.createVertexArray();
         gl.bindVertexArray(triangleArray);
 
-        const positionLocation = controller.getAttributeLocation("position");
+        const positionLocation = getAttributeLocation("position");
         const positions = positionLocation >= 0 ? new Float32Array([
             -0.5, 0.5, 0.0,
             -0.5, -0.5, 0.0,
@@ -27,7 +27,7 @@
           gl.enableVertexAttribArray(positionLocation);
         }
 
-        const texLocation = controller.getAttributeLocation("tex");
+        const texLocation = getAttributeLocation("tex");
         const w = 238 / 1886;
         const texCoordinates = texLocation >= 0 ? new Float32Array([
             0, 0,
@@ -45,13 +45,13 @@
           gl.enableVertexAttribArray(texLocation);
         }
 
-        const texture = await loadTexture(gl);
+        const texture = await loadTexture(gl, getUniformLocation);
 
         return {triangleArray, positions, positionBuffer, texCoordinates, texBuffer, positionLocation, texLocation, texture};
       }
 
-      async function loadTexture(gl) {
-        const textureLocation = controller.getUniformLocation("uTexture");
+      async function loadTexture(gl, getUniformLocation) {
+        const textureLocation = getUniformLocation("uTexture");
         gl.uniform1i(textureLocation, 0);
         gl.activeTexture(gl.TEXTURE0);
 
@@ -85,15 +85,15 @@
         gl.deleteTexture(texture);
       }
 
-      function timerRefresh(gl) {
+      function timerRefresh({gl, getAttributeLocation, getUniformLocation }) {
         let resources;
         let id;
 
-        initialize(gl).then((res) => {
+        initialize(gl, getAttributeLocation, getUniformLocation).then((res) => {
           resources = res;
           const {triangleArray} = resources;
 
-          const timeLocation = controller.getUniformLocation("time");
+          const timeLocation = getUniformLocation("time");
 
           const loop = (time) => {
             //  update position
@@ -114,15 +114,15 @@
         };
       }
 
-      function animatedRefresh(gl) {
+      function animatedRefresh({gl, getAttributeLocation, getUniformLocation }) {
         let resources;
         let id;
 
-        initialize(gl).then((res) => {
+        initialize(gl, getAttributeLocation, getUniformLocation).then((res) => {
           resources = res;
           const {triangleArray, positions, positionBuffer, texCoordinates, texBuffer} = resources;
 
-          const timeLocation = controller.getUniformLocation("time");
+          const timeLocation = getUniformLocation("time");
           gl.uniform1f(timeLocation, 0);
 
           const loop = (time) => {
@@ -217,7 +217,7 @@
               `
             },
         ],
-        onRefresh: timerRefresh,
+        onChange: timerRefresh,
       };
 
       document.addEventListener("DOMContentLoaded", () => {
@@ -243,7 +243,7 @@
       </div>
       <div>
         <label for="refresh">Refresh:</label>
-        <select id="refresh" onchange="controller?.setRefresh(this.value === 'timer' ? timerRefresh : animatedRefresh); updateDescription()">
+        <select id="refresh" onchange="controller?.setOnChange(this.value === 'timer' ? timerRefresh : animatedRefresh); updateDescription()">
           <option value="timer" selected>timer</option>
           <option value="animated">animated</option>
         </select>
